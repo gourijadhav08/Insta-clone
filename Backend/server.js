@@ -1,3 +1,9 @@
+require("dotenv").config()
+
 const app = require("./src/app")
 
-const dotenv = require("dotenv").config()
+const connectToDb = require("./src/config/database")
+
+
+connectToDb()
+app.listen(3000)
