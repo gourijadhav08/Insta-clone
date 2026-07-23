@@ -20,7 +20,11 @@ const userschema = new mongoose.schema({
             Bio:String,
             profileImage:{
                type:String,
-               default:
+               default:"https://ik.imagekit.io/vajbm4iry/insta-img"
             }
 
 })
+
+const usermodel = mongoose.model("users",userschema)
+
+module.exports = usermodel
