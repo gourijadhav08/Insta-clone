@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 
-const userschema = new mongoose.schema({
+const userschema = new mongoose.Schema({
          username:{
             type:String,
             unique:[true,"This already exit"],

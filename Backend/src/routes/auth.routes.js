@@ -4,7 +4,7 @@ const crypto = require('crypto')
 const jwt = require("jsonwebtoken")
 const authRouter = express.Router()
 
-authRouter.post('/register',(req,res)=>{
+authRouter.post('/register', async(req,res)=>{
     const{email,username,password,bio,profileImage} = req.body
 
      const isuserAlreadyExists = await usermodel.findOne({
@@ -40,6 +40,32 @@ authRouter.post('/register',(req,res)=>{
      {expiresIn:"1d"}
     )
 
-    res.cookie("token")
+    res.cookie("token",token)
+
+    res.status(201).json({
+        message:"user Registered Successfully",
+        user:{
+             email: user.email,
+             username: user.username,
+             Bio:user.Bio,
+             profileImage:user.profileImage,
+        }
+    })
 })
 
+
+authRouter.post('/login',async(req,res)=>{
+    const{email,password} = req.body
+
+    const isUserAlreadyExit= await usermodel.findOne({
+               
+        $or:[
+        {email},
+        {password}
+    ]
+
+     
+    })
+  
+})
+module.exports = authRouter
