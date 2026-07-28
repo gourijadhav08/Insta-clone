@@ -1,26 +1,45 @@
 const express = require("express")
 const usermodel = require("../model/use.model")
-
+const crypto = require('crypto')
+const jwt = require("jsonwebtoken")
 const authRouter = express.Router()
 
 authRouter.post('/register',(req,res)=>{
     const{email,username,password,bio,profileImage} = req.body
 
-    const isuserExitByEmail = await usermodel.findone({email})
+     const isuserAlreadyExists = await usermodel.findOne({
+        $or:[
+            {username},
+            {email}
+        ]
+     })
 
-    if (isuserExitByEmail){
-        return res.status(409).json({
-            message:"this email already exit"
+
+     if(isuserAlreadyExists){
+        return res.status(409)
+        .json({
+            message:"user already exists" + (isuserAlreadyExists.email==email?"email already exists":"username already exit")
         })
-    }
+     }
 
-  const isuserExitByUsername = await usermodel.findone({username})
+     const hash = crypto.createHash('sha256').update(password).digest('hex')
+       
+     const user = await usermodel.create({
+        username,
+        email,
+        bio,
+        profileImage,
+        password:hash
+     })
 
-   if(isuserExitByUsername){
-    return res.status(409).json({
-        message:"user already exites by username"
-    })
-   }
+     const token = jwt.sign
+     ({
+       id:user._id
+     }
+     ,process.env.JWT_SECRET,
+     {expiresIn:"1d"}
+    )
 
+    res.cookie("token")
 })
 
