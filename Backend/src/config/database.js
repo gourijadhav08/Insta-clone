@@ -7,4 +7,4 @@ function connectToDb(){
     })
 }
 
-module.exports=connectToDb  // ✅ Remove the ()
+module.exports=connectToDb  
