@@ -7,4 +7,8 @@ const postRoute = express.Router()
 
 postRoute.post("/",upload.single("image") ,createpostcontroller)
 
+postRoute.get("/",postController.getPostController)
+
+postRoute.get("/details/:postId", postController.getPostDetailsController)
+
 module.exports = postRoute

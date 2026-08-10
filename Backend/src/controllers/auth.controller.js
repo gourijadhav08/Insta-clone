@@ -19,7 +19,7 @@ async function registercontroller(req,res){
         })
      }
 
-     const hash = await bcrypt.hash(password,10)  // ✅ FIXED: bcrypt not crypto
+     const hash = await bcrypt.hash(password,10)
        
      const user = await usermodel.create({
         username,
@@ -33,7 +33,7 @@ async function registercontroller(req,res){
        id:user._id
      }, process.env.JWT_SECRET, {expiresIn:"1d"})
 
-    res.cookie("token",token).status(201).json({  // ✅ FIXED: Added status(201)
+    res.cookie("token",token).status(201).json({
         message:"user Registered Successfully",
         user:{
              email: user.email,
@@ -60,7 +60,7 @@ async function logincontroller(req,res){
         })
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password)  // ✅ FIXED: Added arguments
+    const isPasswordValid = await bcrypt.compare(password, user.password)
     
     if(!isPasswordValid){
         return res.status(401).json({
@@ -74,7 +74,7 @@ async function logincontroller(req,res){
         {expiresIn:"1d"}
     )
 
-    res.cookie("token",token).status(200).json({  // ✅ FIXED: Added status(200)
+    res.cookie("token",token).status(200).json({
         message:"user loggedIn successfully.",
         user:{
             username:user.username,
