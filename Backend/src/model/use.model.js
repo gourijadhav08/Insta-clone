@@ -13,15 +13,24 @@ const userschema = new mongoose.Schema({
              required:[true,"Have to give emial"]
          },
 
-            password:{
+          password:{
                type:String,
                required:[true,"password is IMP to create the account"]
             },
-            Bio:String,
+         Bio:String,
             profileImage:{
                type:String,
                default:"https://ik.imagekit.io/vajbm4iry/insta-img"
-            }
+            },
+         followers:[{
+            type:mongoose.Schema.Types.ObjectId, 
+            ref:"users"
+           }],
+
+        following:[{
+             type:mongoose.Schema.Types.ObjectId,  
+             ref:"users"
+    }]
 
 })
 
