@@ -5,21 +5,13 @@ const { toFile } = require("@imagekit/nodejs")
 const PostModel = require("../model/post.model")
 const jwt = require("jsonwebtoken")
 
+
 const imagekit = new Imagekit({
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY
 })
 
 async function createpostcontroller(req,res){
-    console.log(req.body,req.file)
-
-    let decoded = null
-    try{
-       decoded = jwt.verify(req.cookies.token,process.env.JWT_SECRET)
-    }catch(err){
-        return res.status(401).json({
-            message:"user not authorized"
-        })
-    }
+  
     console.log(decoded)
 
     const file = await imagekit.files.upload({
@@ -30,7 +22,7 @@ async function createpostcontroller(req,res){
     const post = await PostModel.create({
         caption:req.body.caption,
         image:file.url,
-        user:decoded.id,
+        user:req.user.id,
         folder:"summer of code.png"
     })
 
@@ -41,17 +33,9 @@ async function createpostcontroller(req,res){
 }
 
 async function getPostController(req,res){
-    let decoded;
-    const token = req.cookies.token
-    try{
-        decoded =  jwt.verify(token,process.env.JWT_SECRET)
-    }catch(err){
-        return res.status(401).json({
-            message:"Token is invalid"
-        })
-    }
+ 
 
-    const userId = decoded.id
+    const userId = req.user.id
 
     const post=await PostModel.find({
         user:userId
@@ -64,17 +48,10 @@ async function getPostController(req,res){
 }
 
 async function getPostDetailsController(req,res){
-    let decoded;
-    const token = req.cookies.token
-    try{
-        decoded =  jwt.verify(token,process.env.JWT_SECRET)
-    }catch(err){
-        return res.status(401).json({
-            message:"You not have access"
-        })
-    }
+    
+  
 
-    const userId = decoded.id
+    const userId = req.user.id 
     const postId = req.params.postId
 
     const post = await PostModel.findById(postId)

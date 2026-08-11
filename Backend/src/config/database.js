@@ -5,6 +5,10 @@ function connectToDb(){
     .then(()=>{
         console.log("connected to db")
     })
+    .catch((err)=>{
+        console.error("MongoDB connection failed:", err.message)
+        process.exit(1)
+    })
 }
 
 module.exports=connectToDb  
