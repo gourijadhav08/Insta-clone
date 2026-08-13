@@ -18,7 +18,7 @@ async function identifyUser(req,res,next){
            })
        }
 
-    res.user = decoded
+    req.user = decoded
 
     next()
 }

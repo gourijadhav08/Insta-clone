@@ -30,8 +30,11 @@ async function registercontroller(req,res){
      })
 
      const token = jwt.sign({
-       id:user._id
-     }, process.env.JWT_SECRET, {expiresIn:"1d"})
+       id:user._id,
+       username:user.username
+     }, 
+     process.env.JWT_SECRET, 
+     {expiresIn:"1d"})
 
     res.cookie("token",token).status(201).json({
         message:"user Registered Successfully",
@@ -69,7 +72,7 @@ async function logincontroller(req,res){
     }
 
     const token = jwt.sign(
-        {id:user._id},
+        {id:user._id,username:user.username},
         process.env.JWT_SECRET,
         {expiresIn:"1d"}
     )

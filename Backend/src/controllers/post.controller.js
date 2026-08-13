@@ -5,7 +5,6 @@ const { toFile } = require("@imagekit/nodejs")
 const PostModel = require("../model/post.model")
 const jwt = require("jsonwebtoken")
 
-
 const imagekit = new Imagekit({
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY
 })
